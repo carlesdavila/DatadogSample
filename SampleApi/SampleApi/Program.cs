@@ -5,36 +5,31 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Nombre del servicio para identificar las trazas
-var serviceName = "MiApiConOpenTelemetry";
+// Define the service name for tracing
+var serviceName = "sampleapi";
 
-// Configurar OpenTelemetry antes de construir la aplicación
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddConsoleExporter())
+        .AddConsoleExporter()
+        .AddOtlpExporter())
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddConsoleExporter());
+        .AddOtlpExporter());
 
-builder.Logging.AddOpenTelemetry(options =>
-{
-    options
-        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName))
-        .AddConsoleExporter();
-});
+builder.Logging.AddOpenTelemetry(logging => { logging.AddOtlpExporter(); });
 
-// Agregar controladores y Swagger
+// Add controllers and Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configurar el pipeline de solicitudes HTTP
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
