@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -49,6 +50,18 @@ export default function Home() {
           >
             Read our docs
           </a>
+        </div>
+
+        <div className="flex flex-col gap-4 mt-8">
+          <Link href="/csr" className="text-blue-500 hover:underline">
+            Ir a CSR
+          </Link>
+          <Link href="/ssr" className="text-blue-500 hover:underline">
+            Ir a SSR
+          </Link>
+          <Link href="/isr" className="text-blue-500 hover:underline">
+            Ir a ISR
+          </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
