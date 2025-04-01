@@ -24,7 +24,7 @@
       - 4317:4317
       - 4318:4318
     environment:
-      - DD_API_KEY=${DATADOG_API_KEY}  # Datadog API key
+      - DD_API_KEY=
       - DD_SITE=datadoghq.eu  # Datadog site
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_LOGS_ENABLED=true
@@ -35,3 +35,14 @@
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: my-next-app/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://sampleapi:8080/api
+    depends_on:
+      - sampleapi
