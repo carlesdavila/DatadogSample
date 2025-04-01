@@ -1,33 +1,32 @@
-﻿"use client"; // 👈 Esto es obligatorio en Next.js 13+ en el App Router
+﻿// src/app/csr/page.tsx
+"use client";
 
-import { useState, useEffect } from "react";
-
-interface Post {
-    id: number;
-    title: string;
-    body: string;
-}
+import { useEffect, useState } from 'react';
+import { Weather } from '@/types/Weather';
 
 export default function CSRPage() {
-    const [post, setPost] = useState<Post | null>(null);
+  const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
-    useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/posts/3")
-            .then((res) => res.json())
-            .then((data: Post) => setPost(data));
-    }, []);
+  useEffect(() => {
+    async function fetchWeather() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/weather/weather`);
+      const data: Weather[] = await res.json();
+      setWeatherData(data);
+    }
 
-    return (
-        <div>
-            <h1>CSR: Client-Side Rendering</h1>
-            {post ? (
-                <>
-                    <h2>{post.title}</h2>
-                    <p>{post.body}</p>
-                </>
-            ) : (
-                <p>Cargando...</p>
-            )}
+    fetchWeather();
+  }, []);
+
+  return (
+    <div>
+      <h1>CSR: Client-Side Rendering</h1>
+      {weatherData.map((weather: Weather, index: number) => (
+        <div key={index}>
+          <h2>{weather.date}</h2>
+          <p>Temperature: {weather.temperatureC}°C</p>
+          <p>Summary: {weather.summary}</p>
         </div>
-    );
+      ))}
+    </div>
+  );
 }

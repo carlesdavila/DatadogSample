@@ -56,12 +56,6 @@ export default function Home() {
           <Link href="/csr" className="text-blue-500 hover:underline">
             Ir a CSR
           </Link>
-          <Link href="/ssr" className="text-blue-500 hover:underline">
-            Ir a SSR
-          </Link>
-          <Link href="/isr" className="text-blue-500 hover:underline">
-            Ir a ISR
-          </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
